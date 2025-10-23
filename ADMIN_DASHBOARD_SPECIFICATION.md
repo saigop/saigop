@@ -2,17 +2,24 @@
 
 ## Document Overview
 This specification outlines the functional requirements for two primary user personas:
-1. **Admin Persona** - System administration, configuration, and monitoring
-2. **Marketing Manager Persona** - Analysis, reporting, and competitive insights
+1. **Admin Persona** - System administration, configuration, and monitoring (240 hours)
+2. **Marketing Manager Persona** - Analysis, reporting, and competitive insights (280 hours)
+
+**Total Effort**: 520 hours
 
 ---
 
 ## Admin Persona Specification
 
-### 1. Login and Dashboard Overview
+**Total Hours**: 240 hours
+
+### Overview
+The Admin Persona focuses on system administration, configuration, data source management, and monitoring. This role ensures system health, manages entities and competitors, configures reporting, and oversees user management with audit capabilities.
+
+### 1. Login and Dashboard Overview (40 hours)
 
 #### Description
-Develop a secure authentication system integrated with AWS Cognito, supporting Multi-Factor Authentication (MFA). The dashboard provides a comprehensive overview of system health and operational metrics.
+Develop secure login using AWS Cognito with MFA support. Create dashboard displaying system health including user count, data sources, schedules, last sync status, and error logs via CloudWatch. Incorporate role-based permissions and quick action buttons for management tasks.
 
 #### Functional Requirements
 - **Authentication**
@@ -50,10 +57,10 @@ Develop a secure authentication system integrated with AWS Cognito, supporting M
 
 ---
 
-### 2. Data Sources and Schedules Management
+### 2. Data Sources and Schedules Management (30 hours)
 
 #### Description
-Create a comprehensive interface for viewing and configuring scheduled data collection jobs. Initially focused on Google Reviews ingestion via AWS Glue ETL with fixed schedules.
+Create UI for viewing and configuring scheduled jobs for Glue ETL operations. Support fixed schedules only (no dynamic scheduling). Add parameters for API keys and maximum competitor limits. Enable manual sync triggers and performance metrics monitoring. Integrate with EventBridge for job scheduling. Reduced scope: Start with fixed scheduling only.
 
 #### Functional Requirements
 - **Schedule Viewing**
@@ -98,10 +105,10 @@ Create a comprehensive interface for viewing and configuring scheduled data coll
 
 ---
 
-### 3. Entities & Competitors Management
+### 3. Entities and Competitors Management (60 hours)
 
 #### Description
-Build management interface for retailers and shopping centers with dynamic competitor tracking capabilities. Support up to 20 competitors per entity with Google API integration.
+Build management interface for retailers and shopping centers. Support toggle for 'Treat as Retailer' functionality for shopping centers and set display order. Implement dynamic competitor list management supporting up to 20 competitors with search and add functionality via Google API. Enable on-demand data ingestion queuing via SQS for newly added competitors. Update data model in DynamoDB and OpenSearch.
 
 #### Functional Requirements
 - **Entity Management**
@@ -148,17 +155,18 @@ Build management interface for retailers and shopping centers with dynamic compe
 
 ---
 
-### 4. Reporting and Email Configuration
+### 4. Reporting and Email Configuration (30 hours)
 
 #### Description
-Develop settings interface for automated report generation and distribution. Support scheduled PDF reports with customizable templates, delivered via AWS SES.
+Develop settings UI for scheduled PDF reports delivered via SES. Support weekly or monthly scheduling with configurable recipient lists per retailer (unrestricted number of recipients). Customize PDF report templates to show categories as rows and competitors as columns. Include test delivery functionality and sender management. Integrate with Lambda for PDF generation and EventBridge for automated scheduling. Simplified reporting scope for MVP.
 
 #### Functional Requirements
 - **Report Scheduling**
-  - Configure weekly/monthly report schedules
-  - Select report recipients (unrestricted email list)
+  - Configure weekly/monthly report schedules per retailer
+  - Select report recipients per retailer (unrestricted email list)
   - Set delivery time and timezone
-  - Enable/disable scheduled reports
+  - Enable/disable scheduled reports via checkbox per retailer
+  - Email distribution lists stored per shop for automated delivery
 
 - **Template Customization (Simplified v1)**
   - Basic PDF template structure
@@ -195,10 +203,10 @@ Develop settings interface for automated report generation and distribution. Sup
 
 ---
 
-### 5. User Management and Monitoring
+### 5. User Management and Monitoring (10 hours)
 
 #### Description
-Create user administration interface with basic AWS Cognito User Pool integration. Support user lifecycle management and audit logging.
+Create basic user management section for adding, removing, and assigning roles. Integrate audit logs for key actions such as competitor additions and report generation. Add logout functionality and configuration export features. Use AWS Cognito user pool for authentication. Simplified scope: Basic Cognito integration without advanced features.
 
 #### Functional Requirements
 - **User Management (Basic Cognito)**
@@ -238,10 +246,10 @@ Create user administration interface with basic AWS Cognito User Pool integratio
 
 ---
 
-### 6. Wireframes and Feedback Integration
+### 6. Wireframes and Feedback Integration (20 hours)
 
 #### Description
-Refine and update admin dashboard wireframes based on stakeholder feedback, focusing on system health views, error logs, and future retailer access.
+Update admin dashboard wireframes based on meeting feedback including system health views, error log displays, and considerations for future retailer access. Iterate on UI and UX designs to ensure transparency and ease of use.
 
 #### Functional Requirements
 - **Wireframe Refinement**
@@ -271,14 +279,14 @@ Refine and update admin dashboard wireframes based on stakeholder feedback, focu
 
 ---
 
-### 7. AI Rating Methodology Exposure
+### 7. AI Rating Methodology Exposure (5 hours)
 
 #### Description
-Expose AI rating scale and methodology in admin views. This task focuses on the administrative visibility aspect; detailed LLM logic is covered in Marketing Manager persona.
+Expose AI rating scale (Poor, Average, Good, Excellent) in admin views. Clarify rating methodology documentation. Note: Detailed LLM logic will be covered in Marketing Manager Persona.
 
 #### Functional Requirements
 - **Rating Scale Display**
-  - Expose 5-point scale: Poor → Below Average → Average → Good → Excellent
+  - Expose 4-level scale: Poor → Average → Good → Excellent
   - Admin view of rating thresholds
   - Methodology documentation link
 
@@ -300,10 +308,10 @@ Expose AI rating scale and methodology in admin views. This task focuses on the 
 
 ---
 
-### 8. Scheduled Data Collection Optimization
+### 8. Scheduled Data Collection Optimization (30 hours)
 
 #### Description
-Implement optimized cron jobs for data collection with performance enhancements. Monitor execution and expose metrics in dashboard.
+Implement cron jobs for automated data collection with performance optimizations including batching. Monitor collection jobs and expose metrics in dashboard for transparency.
 
 #### Functional Requirements
 - **Cron Job Implementation**
@@ -338,10 +346,10 @@ Implement optimized cron jobs for data collection with performance enhancements.
 
 ---
 
-### 9. Testing and Integration
+### 9. Testing and Integration (15 hours)
 
 #### Description
-Comprehensive end-to-end testing for all admin flows, including edge cases and integration with backend services.
+End-to-end testing for all admin workflows including edge cases such as maximum competitor limits and sync failures. Integrate with overall backend systems and ensure proper error handling.
 
 #### Functional Requirements
 - **Test Coverage**
@@ -381,10 +389,15 @@ Comprehensive end-to-end testing for all admin flows, including edge cases and i
 
 ## Marketing Manager Persona Specification
 
-### 1. Login and Analysis Scope Selection
+**Total Hours**: 280 hours
+
+### Overview
+The Marketing Manager Persona focuses on competitive analysis, reporting, and AI-driven insights. This role enables data-driven decision making through comprehensive review analysis, comparative reports, and actionable recommendations. The system supports up to 20 retailers per analysis with dynamic filtering, drill-downs, and automated PDF report generation.
+
+### 1. Login and Analysis Scope Selection (30 hours)
 
 #### Description
-Develop role-restricted login with dashboard overview featuring shopping centers and retailers. Enable entity selection and display associated competitor lists.
+Develop role-restricted login; create dashboard with overview cards (shopping center on top, retailers below); enable selection of retailer/center and view dynamic competitor lists (up to 20).
 
 #### Functional Requirements
 - **Authentication**
@@ -421,10 +434,10 @@ Develop role-restricted login with dashboard overview featuring shopping centers
 
 ---
 
-### 2. Time Period and Competitor Configuration
+### 2. Time Period and Competitor Configuration (40 hours)
 
 #### Description
-Integrate time period filters and enable dynamic competitor addition with backend query support and progress notifications.
+Integrate radio buttons for 1/2/3-year filters (backend query updates in OpenSearch); enable dynamic addition of competitors (input name/location, queue Lambda for ingestion/analysis); add progress notifications.
 
 #### Functional Requirements
 - **Time Period Filters**
@@ -463,10 +476,10 @@ Integrate time period filters and enable dynamic competitor addition with backen
 
 ---
 
-### 3. Comparative Analysis and Drill-Downs
+### 3. Comparative Analysis and Drill-Downs (55 hours)
 
 #### Description
-Build comprehensive table views for category-based comparative analysis with detailed drill-down capabilities, sentiment analysis, and AI insights.
+Develop table views for categories (e.g., averages vs. competitors); add detailed clicks showing mention counts, score distributions (e.g., pie charts for Poor/Average/Good/Excellent), sentiment summaries, and RAG insights from Bedrock. Support drill-downs for volume + positive/negative breakdowns.
 
 #### Functional Requirements
 - **Table View Structure**
@@ -474,24 +487,36 @@ Build comprehensive table views for category-based comparative analysis with det
   - Entity and competitors as columns
   - Average scores displayed in cells
   - Color coding for performance (red/yellow/green)
+  - **Hide columns with zero reviews** (no data displayed for competitors without reviews)
+  - Show **review count per attribute** (e.g., "5 of 10 reviews mention this attribute")
+  - Display **combined review totals across all competitors** for each topic/category
 
 - **Category Metrics**
   - Average score per category
   - Comparison to competitor averages
   - Trend indicators (up/down/stable)
   - Mention count per category
+  - Count of reviews per attribute displayed
+
+- **Sorting and Prioritization**
+  - **Dual sorting options**:
+    - Sort by **overall popularity** (based on combined review counts across competitors)
+    - Sort by **importance to specific retailer**
+  - Toggle between sorting views for better insights
+  - User-selectable sorting preference
 
 - **Drill-Down Details**
   - Click category cell to view details:
     - Total mention count
-    - Score distribution (pie/bar chart):
-      - Poor
-      - Below Average
-      - Average
-      - Good
-      - Excellent
+    - Score distribution (pie/bar chart) - **Four-level rating system**:
+      - **Poor**
+      - **Average**
+      - **Good**
+      - **Excellent**
     - Sentiment breakdown (positive/negative/neutral)
     - Sample reviews for each rating tier
+  - **Expand and collapse detailed view per retailer**
+  - Optional **'More Details' button** to drill down into specific attributes and review summaries
 
 - **AI Insights Integration**
   - RAG (Retrieval-Augmented Generation) insights from Amazon Bedrock
@@ -510,21 +535,27 @@ Build comprehensive table views for category-based comparative analysis with det
 
 #### Acceptance Criteria
 - [ ] Table displays categories vs. competitors
+- [ ] Columns with zero reviews are hidden
+- [ ] Review counts per attribute displayed
+- [ ] Combined review totals shown per category
+- [ ] Dual sorting options implemented (popularity and importance)
 - [ ] Average scores calculated correctly
 - [ ] Click category to drill down
 - [ ] Mention counts displayed
-- [ ] Score distribution visualized (pie/bar charts)
+- [ ] Score distribution visualized with 4-level rating (Poor/Average/Good/Excellent)
 - [ ] Sentiment breakdown shown
+- [ ] Expand/collapse detailed view per retailer
+- [ ] 'More Details' button for attribute drill-down
 - [ ] RAG insights from Bedrock integrated
 - [ ] Volume trends displayed over time
 - [ ] Positive/negative breakdowns visible
 
 ---
 
-### 4. Reporting Generation and Scheduling
+### 4. Reporting Generation and Scheduling (50 hours)
 
 #### Description
-Implement comprehensive PDF report generation with executive summaries, comparisons, and scheduling capabilities. Reports delivered via AWS SES with historical library access.
+Implement "Generate Report" button for PDFs (executive summary, comparisons, insights, recommendations with distributions and time-filters); add scheduling options (weekly emails via SES); enable immediate send/download and historical report library. Restructure for readability (category rows vs. competitor columns, exclude low-data categories). Automated PDF reports emailed to marketing managers and retailers with configurable weekly/monthly scheduling per retailer. No retailer portal in MVP; PDF is the primary delivery method.
 
 #### Functional Requirements
 - **Report Generation**
@@ -580,14 +611,14 @@ Implement comprehensive PDF report generation with executive summaries, comparis
 
 ---
 
-### 5. AI Insights and Transparency
+### 5. AI Insights and Transparency (35 hours)
 
 #### Description
-Display AI-generated categories with volumes and averages, ensuring transparency in scoring methodology. Support future LLM integration flexibility.
+Display AI-generated categories (e.g., professionalism, price) with volumes, averages across competitors; show credibility details (e.g., how scores are derived); support future LLM plugging (e.g., Bedrock, others). LLM makes autonomous decisions on attribute visibility and ratings. Four-level rating system: Excellent, Good, Average, and Poor. Ratings determined by LLM analysis of review sentiment and content.
 
 #### Functional Requirements
 - **AI-Generated Categories**
-  - Dynamic category detection from reviews
+  - Dynamic category detection from reviews using LLM
   - Common categories:
     - Professionalism
     - Price/Value
@@ -597,6 +628,8 @@ Display AI-generated categories with volumes and averages, ensuring transparency
     - Cleanliness
     - Speed/Efficiency
   - Custom categories based on review content
+  - **MVP Decision Logic**: LLM makes autonomous decisions on attribute visibility and ratings
+  - Future phases will add human-in-the-loop capability to manually hide fields with zero reviews or adjust categorization
 
 - **Category Metrics Display**
   - Total mention volume per category
@@ -639,10 +672,10 @@ Display AI-generated categories with volumes and averages, ensuring transparency
 
 ---
 
-### 6. Ad-Hoc Analysis and Feedback Features
+### 6. Ad-Hoc Analysis and Feedback Features (25 hours)
 
 #### Description
-Enable on-the-fly comparative analysis and user feedback mechanisms to improve AI insights quality.
+Enable on-the-fly comparisons (tenant vs. 1-3 competitors); add thumbs up/down feedback on insights for improvements. Simple feedback UI with three options: Agree, Disagree, or Neutral for each AI recommendation. Option for free-text comments to help train and improve the LLM. Initial implementation kept minimal with plans to expand in future phases.
 
 #### Functional Requirements
 - **Ad-Hoc Comparison Tool**
@@ -654,6 +687,7 @@ Enable on-the-fly comparative analysis and user feedback mechanisms to improve A
     - User-selected subset
   - Side-by-side visualization
   - Export to PDF/CSV
+  - **Enable dynamic competitor selection for flexible analysis scenarios**
 
 - **Comparison Features**
   - Radar/spider charts for multi-category view
@@ -662,14 +696,13 @@ Enable on-the-fly comparative analysis and user feedback mechanisms to improve A
   - Statistical significance testing
   - Trend analysis over time
 
-- **Feedback Mechanism**
-  - Thumbs up/down on AI insights
-  - Feedback form for incorrect insights:
-    - What was wrong?
-    - Expected insight
-    - Additional context
-  - Feedback storage for model improvement
+- **Feedback Mechanism (Simplified for MVP)**
+  - **Three-option feedback**: Agree, Disagree, or Neutral for each AI recommendation
+  - Optional free-text comments field
+  - Feedback storage for LLM training and improvement
   - Aggregate feedback analytics for admins
+  - Initial implementation kept minimal
+  - Plans to expand feedback features in future phases
 
 - **Improvement Loop**
   - Track feedback trends
@@ -680,19 +713,20 @@ Enable on-the-fly comparative analysis and user feedback mechanisms to improve A
 #### Acceptance Criteria
 - [ ] Select tenant and 1-3 competitors
 - [ ] Generate ad-hoc comparison
+- [ ] Dynamic competitor selection enabled
 - [ ] Visualizations display correctly
 - [ ] Export comparison to PDF/CSV
-- [ ] Thumbs up/down on insights
-- [ ] Submit detailed feedback on incorrect insights
-- [ ] Feedback stored for analysis
+- [ ] Three-option feedback (Agree/Disagree/Neutral) implemented
+- [ ] Optional free-text comments available
+- [ ] Feedback stored for LLM training
 - [ ] Admins can view feedback analytics
 
 ---
 
-### 7. Wireframes and Reporting Format Refinement
+### 7. Wireframes and Reporting Format Refinement (20 hours)
 
 #### Description
-Update marketing dashboard wireframes based on feedback, clarifying timeframe selections and comparative drill-downs. Define PDF report format with visibility optimizations.
+Update marketing dashboard wireframes per feedback (e.g., timeframe clarity, comparative drill-downs); define PDF format with cut-offs for visibility. PDF reports structured with categories as rows and competitors as columns for easy comparison. Exclude categories with insufficient review data to maintain report clarity.
 
 #### Functional Requirements
 - **Wireframe Updates**
@@ -735,10 +769,10 @@ Update marketing dashboard wireframes based on feedback, clarifying timeframe se
 
 ---
 
-### 8. Testing and Integration
+### 8. Testing and Integration (25 hours)
 
 #### Description
-Comprehensive end-to-end testing for marketing manager flows, including ad-hoc scenarios, report exports, and scalability validation.
+End-to-end testing for marketing flows, including ad-hoc scenarios and report exports; ensure scalability for future sources.
 
 #### Functional Requirements
 - **Test Coverage**
@@ -781,6 +815,216 @@ Comprehensive end-to-end testing for marketing manager flows, including ad-hoc s
 - [ ] Performance meets benchmarks
 - [ ] Test coverage > 80%
 - [ ] Accessibility standards met
+
+---
+
+### Key Features and Enhancements
+
+This section provides additional context and detailed specifications for Marketing Manager Persona features that span multiple tasks.
+
+#### Data Presentation and Filtering
+- **Hide columns with zero reviews** in dashboard tables
+  - No data displayed for competitors without reviews
+  - Cleaner, more focused analysis views
+  - Automatic filtering based on data availability
+- **Display count of reviews per attribute**
+  - Example: "5 of 10 reviews mention this attribute"
+  - Provides context for score reliability
+  - Helps users assess data confidence
+- **Show combined review totals across all competitors** for each topic or category
+  - Aggregate view of category importance
+  - Industry-level insights
+  - Benchmark against market trends
+
+#### Competitor Management
+- **Support listing of 20 retailers** with all reviewed categories displayed
+  - Maximum 20 competitors per entity
+  - Complete category coverage
+  - Comprehensive comparative analysis
+- **Show comprehensive competitor analysis** across all attributes
+  - Side-by-side comparisons
+  - Performance benchmarking
+  - Identify competitive gaps and opportunities
+
+#### Sorting and Prioritization
+- **Implement dual sorting options**:
+  1. **Sort by overall popularity** (based on combined review counts across competitors)
+     - Industry-wide importance
+     - Most discussed attributes
+     - Market-level priorities
+  2. **Sort by importance to specific retailer**
+     - Entity-specific relevance
+     - Customized priorities
+     - Retailer-centric view
+- **Enable users to toggle between these views** for better insights
+  - Quick switching mechanism
+  - User preference persistence
+  - Flexible analysis approach
+
+#### Rating System
+- **Four-level rating system**: Excellent, Good, Average, and Poor
+  - Simplified from 5-level scale for clarity
+  - Clear differentiation between levels
+  - Easy-to-understand performance tiers
+- **Ratings determined by LLM analysis** of review sentiment and content
+  - Automated sentiment analysis
+  - Natural language processing
+  - Contextual understanding of review content
+  - Amazon Bedrock integration
+
+#### Detailed View Options
+- **Expand and collapse detailed view per retailer**
+  - Space-efficient design
+  - User-controlled detail level
+  - Focus on relevant information
+- **Optional 'More Details' button** to drill down into specific attributes and review summaries
+  - Deep-dive capability
+  - Review-level granularity
+  - Sample review access
+  - Full context availability
+
+#### Feedback Loop and AI Training
+- **Simple feedback UI with three options**: Agree, Disagree, or Neutral for each AI recommendation
+  - Quick feedback mechanism
+  - Minimal user effort required
+  - Clear opinion capture
+- **Option for free-text comments** to help train and improve the LLM
+  - Detailed feedback capability
+  - Contextual improvement suggestions
+  - User voice captured
+- **Initial implementation kept minimal** with plans to expand in future phases
+  - MVP-focused scope
+  - Foundation for future enhancements
+  - Scalable architecture
+
+#### PDF Report Generation and Distribution
+- **Automated PDF reports emailed** to marketing managers and retailers
+  - Scheduled delivery
+  - Consistent reporting cadence
+  - Professional formatting
+- **Schedule configurable as weekly or monthly** via checkbox per retailer
+  - Flexible scheduling
+  - Entity-specific configuration
+  - Customizable delivery frequency
+- **Email distribution lists stored per shop** for automated delivery
+  - Per-retailer recipient management
+  - Unrestricted recipient count
+  - Centralized configuration
+- **No retailer portal in MVP**; PDF is the primary delivery method
+  - Simplified distribution model
+  - Email-based access
+  - Future portal capability planned
+
+#### Report Format Structure
+- **PDF reports structured with categories as rows and competitors as columns** for easy comparison
+  - Intuitive layout
+  - Quick visual comparison
+  - Category-focused analysis
+- **Exclude categories with insufficient review data** to maintain report clarity
+  - Data quality threshold
+  - Clean, focused reports
+  - Avoid noise from sparse data
+
+---
+
+### Technical Implementation Details
+
+This section outlines the technical architecture and implementation approach for the Marketing Manager Persona.
+
+#### Data Collection Pipeline
+- **Pull Google Place ID from Precision Group APA endpoints**
+  - Integration with Precision Group systems
+  - Entity identification
+  - Standardized place references
+  - API endpoint connectivity
+- **Use SERP API (free trial for MVP)** to fetch review KPIs and attributes
+  - Google Reviews data source
+  - Review metadata extraction
+  - Rating and sentiment data
+  - Free tier for initial MVP
+  - Scalable to paid tier for production
+- **LLM processes collected data** and stores results in database
+  - Amazon Bedrock for AI processing
+  - Category extraction
+  - Sentiment analysis
+  - Rating generation
+  - DynamoDB/OpenSearch storage
+
+#### MVP Decision Logic
+- **LLM makes autonomous decisions** on attribute visibility and ratings
+  - Automated categorization
+  - No manual intervention required in MVP
+  - AI-driven insights
+  - Consistent scoring methodology
+- **Future phases will add human-in-the-loop capability**
+  - Manual field hiding option
+  - Category adjustment controls
+  - Admin override capability
+  - Supervised learning improvements
+
+#### Time Period Filtering
+- **Support for 1, 2, and 3-year time period selections**
+  - Radio button interface
+  - User-selectable time ranges
+  - Historical trend analysis
+- **Backend query updates in OpenSearch** to filter data by selected time range
+  - Dynamic query generation
+  - Date-based filtering
+  - Optimized performance
+  - Real-time updates
+
+#### Comparative Analysis Views
+- **Table views showing category averages versus competitors**
+  - Matrix layout
+  - Color-coded performance
+  - Quick visual comparison
+- **Detailed drill-downs displaying**:
+  - Mention counts per category
+  - Score distributions (pie charts for Poor, Average, Good, Excellent)
+  - Sentiment summaries
+  - RAG insights from Amazon Bedrock
+  - Sample review excerpts
+  - Volume trends over time
+  - Positive/negative breakdowns
+
+#### Ad-Hoc Analysis Capability
+- **Enable on-the-fly comparisons** between tenant and 1-3 selected competitors
+  - Real-time analysis
+  - User-defined comparison sets
+  - Flexible selection
+- **Support dynamic competitor selection** for flexible analysis scenarios
+  - Change competitors without configuration
+  - Instant report regeneration
+  - Multiple comparison scenarios
+  - Export to PDF/CSV
+
+#### Data Sources and APIs
+- **Precision Group APA Endpoints**: Entity data and Google Place IDs
+- **SERP API**: Google Reviews collection (free trial for MVP)
+- **Google Places API**: Competitor search and details
+- **Amazon Bedrock**: LLM processing and RAG insights
+- **AWS OpenSearch**: Review data storage and querying
+- **AWS DynamoDB**: Entity and competitor metadata
+- **AWS Lambda**: Serverless processing functions
+- **AWS SES**: Email delivery for reports
+- **AWS S3**: Report storage and archival
+
+#### AI and Machine Learning
+- **Amazon Bedrock** as primary LLM provider
+  - Natural language understanding
+  - Category extraction
+  - Sentiment analysis
+  - Rating generation
+  - Insight recommendations
+- **Pluggable LLM architecture** for future flexibility
+  - Support for multiple LLM providers
+  - Easy switching between models
+  - Comparative testing capability
+- **Retrieval-Augmented Generation (RAG)**
+  - Context-aware insights
+  - Review-grounded recommendations
+  - Factual accuracy
+  - Source attribution
 
 ---
 
@@ -842,8 +1086,21 @@ Comprehensive end-to-end testing for marketing manager flows, including ad-hoc s
 
 ## Document Control
 
-**Version**: 1.0
+**Version**: 2.0
 **Created**: 2025-10-23
 **Last Updated**: 2025-10-23
-**Status**: Draft for Review
+**Status**: Revised Based on Updated Requirements
 **Approvers**: Product Owner, Tech Lead, UX Lead
+
+### Revision History
+- **v1.0** (2025-10-23): Initial specification document
+- **v2.0** (2025-10-23): Updated with revised requirements
+  - Added effort hours (Admin: 240h, Marketing Manager: 280h)
+  - Changed rating system from 5-level to 4-level (Poor, Average, Good, Excellent)
+  - Added Key Features and Enhancements section for Marketing Manager persona
+  - Added Technical Implementation Details section
+  - Updated feedback mechanism to Agree/Disagree/Neutral
+  - Added data presentation filtering and sorting details
+  - Included SERP API and Precision Group APA integration details
+  - Clarified per-retailer recipient configuration
+  - Added MVP decision logic and human-in-the-loop future plans
